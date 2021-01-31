@@ -148,10 +148,10 @@ Ntheta2 = np.arctan2(np.sin(np_inst_phase[:,2]),np.cos(np_inst_phase[:,2]))
 
 #plt.show()
 xticks=[-1.0,-0.5,0,0.5,1]
-# plt.plot(t/1000, (np.cos(np_inst_phase[:,0])- np.cos(np_inst_phase[:,1])), 'k', label = r'$\theta_{12}^e $', linewidth = 1.2)
+plt.plot(t/1000, (np.cos(np_inst_phase[:,0])- np.cos(np_inst_phase[:,1])), 'k', label = r'$\theta_{12}^e $', linewidth = 1.2)
 plt.plot(t/1000, (np.cos(state[:,0])))
-# plt.plot(t/1000, np.cos(np_inst_phase[:,0])- np.cos(np_inst_phase[:,2]), 'k-.', label = r'$\theta_{13}^e $', linewidth = 2.0)
-# plt.plot(t/1000, np.cos(np_inst_phase[:,1])- np.cos(np_inst_phase[:,2]), 'k--', label = r'$\theta_{23}^e $', linewidth = 2.0)
+plt.plot(t/1000, np.cos(np_inst_phase[:,0])- np.cos(np_inst_phase[:,2]), 'k-.', label = r'$\theta_{13}^e $', linewidth = 2.0)
+plt.plot(t/1000, np.cos(np_inst_phase[:,1])- np.cos(np_inst_phase[:,2]), 'k--', label = r'$\theta_{23}^e $', linewidth = 2.0)
 plt.xlabel("Time(s)", fontsize=18, style='italic')
 plt.ylabel('Phase Error(s)', fontsize=18, style='italic')
 plt.xticks(fontsize=18,style='italic')

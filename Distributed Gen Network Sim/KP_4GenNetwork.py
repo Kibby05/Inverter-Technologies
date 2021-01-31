@@ -194,7 +194,7 @@ def InvNW_Simulation(state, ts):
 
     # Update state list
     Next_state = Phase_Next_state + Voltage_Next_state
-    print(Phase_Next_state)
+    # print(Phase_Next_state)
     # Capture states for plots
     Freq_Error.append([Phase_Next_state])
     # Inst_Phase.append([phase])
