@@ -11,13 +11,16 @@ class ExponentialLoad:
         self.Q0 = Q0
         self.V0 = V0
         # Polynomial ZIP Model Coefficients (Private)
-        self.__np = np
-        self.__nq = nq
+        self.np = np
+        self.nq = nq
     
     def Exp_LoadPower(self, V):
         # Note: We need to pay attenetion with the initial coniditions as well as
         # passing in an array or not...
-        PL = self.P0*((V/self.V0)^self.__np)
-        QL = self.Q0*((V/self.V0)^self.__nq)
+        PL = self.P0*((V/self.V0)**self.np)
+        QL = self.Q0*((V/self.V0)**self.nq)
         return PL, QL 
-    
+
+    def Exp_UnitTest(self, V):
+        return self.Exp_LoadPower(V)
+        

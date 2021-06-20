@@ -18,7 +18,6 @@ class EPRILoadsyn:
                 Ki, Kc, K1, kf1, K2, kf2, nv1, nv2
                 ):
         # Super function added in the use case of multiple inheretence...
-        print("EPRILoadsyn Class")
         super().__init__()
 
         # Initial EPRI Load settings by composing of Exponential classes
@@ -40,6 +39,7 @@ class EPRILoadsyn:
             kf1[0],
             kf1[1],
             f0,
+            None,
             ExponentialLoad(
                 K1[0],
                 K1[1],
@@ -52,6 +52,7 @@ class EPRILoadsyn:
             kf2[0],
             kf2[1],
             f0,
+            None,
             ExponentialLoad(
                 K2[0],
                 K2[1],
@@ -62,6 +63,11 @@ class EPRILoadsyn:
         )
 
     def EPRI_LoadPower(self, V, f):
-        SL = self.Sz.Exp_LoadPower(V) + self.Si.Exp_LoadPower(V) + self.Sc 
-        + self.S1.Expfreq_LoadPower(V, f) + self.S2.Expfreq_LoadPower(V,f)
-        return SL
+        SLz = self.Sz.Exp_LoadPower(V)
+        SLi = self.Si.Exp_LoadPower(V)
+        SLc = self.Sc
+        SLf1 = self.S1.Expfreq_LoadPower(V, f)
+        SLf2 = self.S2.Expfreq_LoadPower(V, f)
+        PL = SLz[0] + SLi[0] + SLc[0] + SLf1[0] + SLf2[0]
+        QL = SLz[1] + SLi[1] + SLc[1] + SLf1[1] + SLf2[1]
+        return PL, QL

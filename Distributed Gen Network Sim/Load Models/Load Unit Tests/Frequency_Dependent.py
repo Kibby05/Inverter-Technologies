@@ -12,14 +12,15 @@ class FreqDependentLoad:
     -------------------------"""
     # FreqDependentLoad Model Constructor
     def __init__(self,kpf, kqf, f0, ZIPpolynomialLoad=None, ExponentialLoad=None):
-        # Aggregate Base Load Models into frequency dependence
-        self.ZIPLoad = ZIPpolynomialLoad
-        self.ExpLoad = ExponentialLoad
 
         # Instantiate Base Load Models into frequency dependence
         self.__kpf = kpf
         self.__kqf = kqf
         self.__f0 = f0
+
+        # Aggregate Base Load Models into frequency dependence
+        self.ZIPLoad = ZIPpolynomialLoad
+        self.ExpLoad = ExponentialLoad
 
     def ZIPfreq_LoadPower(self, V, f):
         PL = (self.ZIPLoad.ZIP_LoadPower(V)[0])*(self.Freq_Dependence(f)[0])
@@ -35,6 +36,3 @@ class FreqDependentLoad:
         fp = (1+self.__kpf*((f-self.__f0)/self.__f0))
         fq = (1+self.__kqf*((f-self.__f0)/self.__f0))
         return fp, fq
-    
-
-Load = FreqDependentLoad(5,4, ZIPpolynomialLoad(1,1,1,1,1,1,1,1,1))

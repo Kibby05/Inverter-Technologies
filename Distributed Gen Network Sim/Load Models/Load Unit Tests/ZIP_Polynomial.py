@@ -21,7 +21,9 @@ class ZIPpolynomialLoad:
     def ZIP_LoadPower(self, V):
         # Note: We need to pay attenetion with the initial coniditions as well as
         # passing in an array or not...
-        PL = self.P0 - (self.__a1*(V/self.V0)^2 + self.__a2*(V/self.V0) + self.__a3)
-        QL = self.Q0 - (self.__a4*(V/self.V0)^2 + self.__a5*(V/self.V0) + self.__a6)
+        PL = self.P0 * (self.__a1*(V/self.V0)**2 + self.__a2*(V/self.V0) + self.__a3)
+        QL = self.Q0 * (self.__a4*(V/self.V0)**2 + self.__a5*(V/self.V0) + self.__a6)
         return PL, QL 
     
+    def ZIP_UnitTest(self, V):
+        return self.ZIP_LoadPower(V)

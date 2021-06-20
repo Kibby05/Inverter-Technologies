@@ -35,3 +35,5 @@ class SinglePhaseInverter:
     def DroopCurve(self):
         
         pass
+    def getInvNextState(self):
+        return

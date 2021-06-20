@@ -137,6 +137,9 @@ def Run_Simulation(ts):
         t = [ts[i], ts[i+1]]
         return_state = odeint(InvNW_Simulation, next_states, t, hmax = 0.01)
         state_buffer = return_state[-1].tolist()
+        
+        
+        
         # Check for Voltage Droop violation
         E = [state_buffer[j] for j in range(len(Inverters), 2 * len(Inverters))]
         phase_buffer = [state_buffer[j] for j in range(0, len(Inverters))]
@@ -154,7 +157,7 @@ def Run_Simulation(ts):
         print(next_states)
         states.append(next_states)
 
-    print(states)
+    # print(states)
     # print(Freq_Error)
     Display_data(np.array(states), ts)
 
@@ -194,7 +197,7 @@ def InvNW_Simulation(state, ts):
 
     # Update state list
     Next_state = Phase_Next_state + Voltage_Next_state
-    # print(Phase_Next_state)
+    print(Next_state)
     # Capture states for plots
     Freq_Error.append([Phase_Next_state])
     # Inst_Phase.append([phase])
