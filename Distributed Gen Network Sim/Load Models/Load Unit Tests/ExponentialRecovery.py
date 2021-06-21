@@ -15,12 +15,12 @@ class ExponentialRecoveryLoad:
     Alpha = (alpha transient, alpha static)
     "
     -------------------------"""
-    def __init__(self, T, x0, S0, V0, alpha):
+    def __init__(self, T, x0, S0, V0, alphaT, alphaS):
         super(ExponentialRecoveryLoad, self).__init__()
         self.Tp = T[0]
         self.Tq = T[1]
-        self.Pt = ExponentialLoad(S0[0],S0[1],V0, alpha[1])
-        self.Ps = ExponentialLoad(S0[0],S0[1],V0, alpha[0])
+        self.Pt = ExponentialLoad(S0[0],S0[1],V0, alphaT)
+        self.Ps = ExponentialLoad(S0[0],S0[1],V0, alphaS)
         self.xp0 = x0[0]
         self.xq0 = x0[1]
     
@@ -28,11 +28,10 @@ class ExponentialRecoveryLoad:
         dxpdt = (1/(self.Tp))*(self.Ps.Exp_LoadPower(V)-self.Pt.Exp_LoadPower(V)-xp)
         dxqdt = (1/(self.Tq))*(self.Ps.Exp_LoadPower(V)-self.Pt.Exp_LoadPower(V)-xq)
         # The question is whether or not this should be calling ODE int itself...
-        # Answer a wrapper function is needed to return the function to be called by odeint
         return [dxpdt,dxqdt]
 
-    def ERL_nextStateWrapper(self):
-        return lambda V,xp,xq : self.ERL_getNextState(V,xp,xq)
+    def ERL_getNextStateWrapper(self):
+        return lambda V,xp,xq : self.ERL_getNextState(V,xp,xq) 
     
     # Note getNextState and getLoadPower are correlated to each other..
     def ERL_getLoadPower(self, xp, xq, V):

@@ -20,4 +20,24 @@ Salary = Salary(1500, 100000, 3)
 
 emp = Employee("pooopppooo", 25, Salary)
 print(emp.total_salary())
-        
+
+'''
+
+https://www.youtube.com/watch?v=8-V5T40aMEc
+
+Avoided the loop by passing u as a function representing the step function:
+def first_order(y, t, tau, K, u):
+    dydt = (-y + K*u(t)) / tau
+    return dydt
+
+
+t0 = 0
+t1 = 10
+intervals = 100
+t = np.linspace(t0, t1, intervals)
+tau = 5.0
+K = 2.0
+u = lambda t: 0 if t < 3 else 1
+y = odeint(first_order, 0, t, args=(tau, K, u))
+plt.plot(t, y)
+'''
