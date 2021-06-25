@@ -9,7 +9,8 @@ from ExponentialRecovery import ExponentialRecoveryLoad
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from scipy.integrate import odint
+from scipy.integrate import odeint
+from array import *
 
 
 # These should probably be within the proper files...
@@ -118,27 +119,46 @@ def EPRI_UnitTest(V, f):
     pass
     
 def ERL_UnitTest(ts, V):
+    # Define ERL Load Under Test
     ERL_Load1 = ExponentialRecoveryLoad(
         (127.6,75.3),
-        (0,0),
+        (0.3,1),
         (32.28,5.56),
         (1.0),
         (2.26,5.22),
         (0.38,2.68)
     )
-    SL = odeint()
+
+    # Loop through and test ERL state solver
+    x0 = ERL_Load1.x0
+    dxdt = []
+    dxdt.append(x0)
+    for i in range(len(ts)-1):
+        t = [ts[i], ts[i+1]]
+        x = odeint(
+            ERL_Load1.ERL_getNextStateWrapper(),
+            x0,
+            t,
+            args = (V[i],)
+        )
+        dxdt.append(x[1].tolist())
+        x0 = x[1]
+
+    dxdt = np.array(dxdt)
+    displayLoad(ts, dxdt)
+
     pass
        
 
 def UnitTest():
     # Define Number of Sample Pointer required
-    N = 100
+    N = 10000
     
     # Define Time Row Vector to Use
-    t = np.linspace(0.0, 1.5, N)
+    t = np.linspace(0.0, 10, N)
     
     # Define Voltage Profile to Determine load Characteristics
-    Vchar = np.linspace(0.0, 1.5, N)
+    Vchar = np.linspace(0.0, 10, N)
     
     # Define Unit Test Voltage Step
     Vbus = np.ones(N)
@@ -149,20 +169,21 @@ def UnitTest():
     # f[int(N/4):int(3*N/4)] *= 0.90
 
     # Desired Loads Under Test...
-    ZIP_UnitTest(Vchar)
-    Exp_UnitTest(Vchar)
-    Freq_UnitTest(Vchar, f)
-    EPRI_UnitTest(Vchar, f)
-    # ERL_UnitTest(t, Vbus)
+    # ZIP_UnitTest(Vchar)
+    # Exp_UnitTest(Vchar)
+    # Freq_UnitTest(Vchar, f)
+    # EPRI_UnitTest(Vchar, f)
+    ERL_UnitTest(t, Vbus)
     # NOTE: Results are Pass but Comparison data is needed.
+
 
     pass
 
 def displayLoad(x,y):
     # Display Active Power vs. Voltage
-    plt.plot(x, y[0], color = 'dodgerblue', label = r'Active Power')
+    plt.plot(x, y[:,0], color = 'dodgerblue', label = r'Active Power')
     # Display Reactive Power vs. Voltage
-    plt.plot(x, y[1], color = 'limegreen', label = r'Reactive Power')
+    plt.plot(x, y[:,1], color = 'limegreen', label = r'Reactive Power')
     plt.grid(color='black', linestyle='-', linewidth=1)
     plt.xlabel("Voltage(V)", fontsize=18, style='italic')
     plt.ylabel('P,Q (W, VAR)', fontsize=18, style='italic')
