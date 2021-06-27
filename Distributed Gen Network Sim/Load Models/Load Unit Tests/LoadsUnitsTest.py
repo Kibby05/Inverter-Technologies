@@ -1,4 +1,5 @@
 # Internal Dependencies
+from numpy.core.fromnumeric import size
 from Exponential import ExponentialLoad
 from Frequency_Dependent import FreqDependentLoad
 from ZIP_Polynomial import ZIPpolynomialLoad
@@ -119,6 +120,7 @@ def EPRI_UnitTest(V, f):
     pass
     
 def ERL_UnitTest(ts, V):
+    
     # Define ERL Load Under Test
     ERL_Load1 = ExponentialRecoveryLoad(
         (127.6,75.3),
@@ -132,7 +134,11 @@ def ERL_UnitTest(ts, V):
     # Loop through and test ERL state solver
     x0 = ERL_Load1.x0
     dxdt = []
-    dxdt.append(x0)
+    PL = []
+    dxdt.append(list(x0))
+    PL.append(list(ERL_Load1.ERL_getLoadPower(x0, V[0])))
+    
+    # Loop through to calculate next states...
     for i in range(len(ts)-1):
         t = [ts[i], ts[i+1]]
         x = odeint(
@@ -140,12 +146,19 @@ def ERL_UnitTest(ts, V):
             x0,
             t,
             args = (V[i],)
-        )
+        ) # Return [x-1, x] in numpy array format
+
         dxdt.append(x[1].tolist())
+        PL.append(list(ERL_Load1.ERL_getLoadPower(x[1], V[i])))
         x0 = x[1]
 
+    # Next State and Load Power Vectors
     dxdt = np.array(dxdt)
+    PL = np.array(PL)
+
+    # Display Load Response Results
     displayLoad(ts, dxdt)
+    displayLoad(ts, PL)
 
     pass
        
@@ -153,12 +166,15 @@ def ERL_UnitTest(ts, V):
 def UnitTest():
     # Define Number of Sample Pointer required
     N = 10000
+
+    # Simulation Total Time (s)
+    T_tot = 10000
     
     # Define Time Row Vector to Use
-    t = np.linspace(0.0, 10, N)
+    t = np.linspace(0.0, T_tot, N)
     
     # Define Voltage Profile to Determine load Characteristics
-    Vchar = np.linspace(0.0, 10, N)
+    Vchar = np.linspace(0.0, T_tot, N)
     
     # Define Unit Test Voltage Step
     Vbus = np.ones(N)
@@ -173,7 +189,7 @@ def UnitTest():
     # Exp_UnitTest(Vchar)
     # Freq_UnitTest(Vchar, f)
     # EPRI_UnitTest(Vchar, f)
-    ERL_UnitTest(t, Vbus)
+    # ERL_UnitTest(t, Vbus)
     # NOTE: Results are Pass but Comparison data is needed.
 
 
