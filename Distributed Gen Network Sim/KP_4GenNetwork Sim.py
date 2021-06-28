@@ -154,7 +154,7 @@ def Run_Simulation(ts):
                             1 * (Inverters[x].Ei - E[x]) - Inverters[x].mi * (Inverters[x].Pnom - Inverters[x].Pi))
 
         next_states = phase + E
-        print(next_states)
+        # print(next_states)
         states.append(next_states)
 
     # print(states)
@@ -211,19 +211,19 @@ def Display_data(return_state, ts):
     print("Running Display_data")
     # print(return_state)
 
-    # # Display Voltage
-    # plt.plot(ts, return_state[:, 4], color = 'dodgerblue', label = 'E_bus1')
-    # plt.plot(ts, return_state[:, 5], color = 'limegreen', label = 'E_bus2')
-    # plt.plot(ts, return_state[:, 6], color = 'm', label = 'E_bus3')
-    # plt.plot(ts, return_state[:, 7], color = 'black', label = 'E_bus4')
-    # plt.grid(color='black', linestyle='-', linewidth=1)
-    # plt.ylim(0.95, 1.05)
-    # plt.xlabel("Time(s)", fontsize=22, style='italic')
-    # plt.ylabel('Voltage(p.u.)', fontsize=22, style='italic')
-    # plt.xticks(fontsize=32, style='italic')
-    # plt.yticks(fontsize=32, style='italic')
-    # # plt.legend(fontsize=22)
-    # plt.show()
+    # Display Voltage
+    plt.plot(ts, return_state[:, 4], color = 'dodgerblue', label = 'E_bus1')
+    plt.plot(ts, return_state[:, 5], color = 'limegreen', label = 'E_bus2')
+    plt.plot(ts, return_state[:, 6], color = 'm', label = 'E_bus3')
+    plt.plot(ts, return_state[:, 7], color = 'black', label = 'E_bus4')
+    plt.grid(color='black', linestyle='-', linewidth=1)
+    plt.ylim(0.95, 1.05)
+    plt.xlabel("Time(s)", fontsize=22, style='italic')
+    plt.ylabel('Voltage(p.u.)', fontsize=22, style='italic')
+    plt.xticks(fontsize=32, style='italic')
+    plt.yticks(fontsize=32, style='italic')
+    # plt.legend(fontsize=22)
+    plt.show()
 
     # # Display Bus Phase Errors
     # plt.plot(ts, np.sin(return_state[:, 0]) - np.sin(return_state[:, 1]), color = 'dodgerblue', label = r'$\theta_{12}^e $')

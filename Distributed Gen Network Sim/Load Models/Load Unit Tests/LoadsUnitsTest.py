@@ -162,6 +162,20 @@ def ERL_UnitTest(ts, V):
 
     pass
        
+def displayLoad(x,y):
+    # Display Active Power vs. Voltage
+    plt.plot(x, y[:,0], color = 'dodgerblue', label = r'Active Power')
+    # Display Reactive Power vs. Voltage
+    plt.plot(x, y[:,1], color = 'limegreen', label = r'Reactive Power')
+    plt.grid(color='black', linestyle='-', linewidth=1)
+    plt.xlabel("Voltage(V)", fontsize=18, style='italic')
+    plt.ylabel('P,Q (W, VAR)', fontsize=18, style='italic')
+    plt.xticks(fontsize=28,style='italic')
+    plt.yticks(fontsize=28,style='italic')
+    plt.legend(fontsize=18)
+    plt.show()
+    pass
+
 
 def UnitTest():
     # Define Number of Sample Pointer required
@@ -191,23 +205,9 @@ def UnitTest():
     # EPRI_UnitTest(Vchar, f)
     # ERL_UnitTest(t, Vbus)
     # NOTE: Results are Pass but Comparison data is needed.
-
-
     pass
 
-def displayLoad(x,y):
-    # Display Active Power vs. Voltage
-    plt.plot(x, y[:,0], color = 'dodgerblue', label = r'Active Power')
-    # Display Reactive Power vs. Voltage
-    plt.plot(x, y[:,1], color = 'limegreen', label = r'Reactive Power')
-    plt.grid(color='black', linestyle='-', linewidth=1)
-    plt.xlabel("Voltage(V)", fontsize=18, style='italic')
-    plt.ylabel('P,Q (W, VAR)', fontsize=18, style='italic')
-    plt.xticks(fontsize=28,style='italic')
-    plt.yticks(fontsize=28,style='italic')
-    plt.legend(fontsize=18)
-    plt.show()
-    pass
+
 
 if __name__ == '__main__':
     UnitTest()
